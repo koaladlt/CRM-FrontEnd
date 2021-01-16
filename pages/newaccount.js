@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import { useFormik } from 'formik'
 import * as Yup from "Yup";
 import { useQuery, useMutation, gql, NetworkStatus } from '@apollo/client'
+import Swal from 'sweetalert2'
 
 const NEW_ACCOUNT = gql`
 mutation newUser($input: UserInput) {
@@ -56,8 +57,18 @@ const NewAccount = () => {
                         }
                     }
                 })
-            } catch (error) {
-
+                Swal.fire({
+                    title: "YAY!",
+                    text: "Don't forget to check your email",
+                    icon: "success",
+                    confirmButtonText: "All done!",
+                });
+            } catch (err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
             }
         }
     });
