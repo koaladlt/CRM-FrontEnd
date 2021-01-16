@@ -4,6 +4,7 @@ import { useFormik } from 'formik'
 import * as Yup from "Yup";
 import { useQuery, useMutation, gql, NetworkStatus } from '@apollo/client'
 import Swal from 'sweetalert2'
+import { useRouter } from 'next/router'
 
 const NEW_ACCOUNT = gql`
 mutation newUser($input: UserInput) {
@@ -22,6 +23,7 @@ mutation newUser($input: UserInput) {
 const NewAccount = () => {
 
     const [newUser] = useMutation(NEW_ACCOUNT)
+    const router = useRouter();
 
 
 
@@ -63,11 +65,12 @@ const NewAccount = () => {
                     icon: "success",
                     confirmButtonText: "All done!",
                 });
+                router.push("/login")
             } catch (err) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Something went wrong!',
+                    text: 'This user is already registered',
                 })
             }
         }
