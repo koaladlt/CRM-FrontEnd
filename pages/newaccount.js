@@ -2,8 +2,27 @@ import React from 'react';
 import Layout from '../components/Layout'
 import { useFormik } from 'formik'
 import * as Yup from "Yup";
+import { useQuery, useMutation, gql, NetworkStatus } from '@apollo/client'
 
-const Login = () => {
+const NEW_ACCOUNT = gql`
+mutation newUser($input: UserInput) {
+    newUser(input: $input) {
+      id
+      name
+      lastName
+      email
+    }
+  }
+  `;
+
+
+
+
+const NewAccount = () => {
+
+    const [newUser] = useMutation(NEW_ACCOUNT)
+
+
 
     const formik = useFormik({
         initialValues: {
@@ -23,7 +42,24 @@ const Login = () => {
                 .required('Password is mandatory').min(6, 'Password must have at least 6 characters')
 
         }),
-        onSubmit: value => console.log(value)
+        onSubmit: async (values) => {
+
+            const { name, lastName, email, password } = values
+            try {
+                await newUser({
+                    variables: {
+                        input: {
+                            name,
+                            lastName,
+                            email,
+                            password
+                        }
+                    }
+                })
+            } catch (error) {
+
+            }
+        }
     });
 
     return (
@@ -138,4 +174,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default NewAccount;
