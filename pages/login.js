@@ -2,8 +2,21 @@ import React from 'react';
 import Layout from '../components/Layout'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
+import { gql, useMutation } from '@apollo/client'
+import Swal from 'sweetalert2'
+
+const AUTHENTICATE_USER = gql`
+mutation authenticateUser ($input: AuthenticateInput) {
+    authenticateUser (input: $input) {
+      token
+    }
+  }
+
+`
 
 const Login = () => {
+
+    const [authenticateUser] = useMutation(AUTHENTICATE_USER)
 
     const formik = useFormik({
         initialValues: {
@@ -16,7 +29,31 @@ const Login = () => {
                 .required('Email is mandatory'),
             password: Yup.string()
                 .required('Password is required')
-        })
+        }),
+        onSubmit: async (values) => {
+            const { email, password } = values
+            try {
+                await authenticateUser({
+                    variables: {
+                        input: {
+                            email,
+                            password
+
+                        }
+                    }
+                })
+
+                console.log(data)
+            } catch (error) {
+                console.log(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'The email or password are incorrect',
+                })
+            }
+
+        }
     })
 
     return (
@@ -25,7 +62,7 @@ const Login = () => {
 
             <div className="flex justify-center mt-5">
                 <div className="w-full max-w-sm">
-                    <form className="bg-white rounded shadow-md px-8 pt-6 pb-8 mb-4">
+                    <form className="bg-white rounded shadow-md px-8 pt-6 pb-8 mb-4" onSubmit={formik.handleSubmit}>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                                 Email
