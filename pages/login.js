@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import { gql, useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
+import { useRouter } from 'next/router';
 
 const AUTHENTICATE_USER = gql`
 mutation authenticateUser ($input: AuthenticateInput) {
@@ -17,6 +18,7 @@ mutation authenticateUser ($input: AuthenticateInput) {
 const Login = () => {
 
     const [authenticateUser] = useMutation(AUTHENTICATE_USER)
+    const router = useRouter();
 
     const formik = useFormik({
         initialValues: {
@@ -33,7 +35,7 @@ const Login = () => {
         onSubmit: async (values) => {
             const { email, password } = values
             try {
-                await authenticateUser({
+                const { data } = await authenticateUser({
                     variables: {
                         input: {
                             email,
@@ -43,7 +45,13 @@ const Login = () => {
                     }
                 })
 
-                console.log(data)
+                const { token } = data.authenticateUser
+                localStorage.setItem('token', token)
+
+                setTimeout(() => {
+                    router.push('/')
+                }, 2000);
+
             } catch (error) {
                 console.log(error)
                 Swal.fire({
