@@ -1,7 +1,23 @@
 import React from 'react';
 import Layout from '../components/Layout'
+import { useFormik } from 'formik';
+import * as Yup from 'yup'
 
 const Login = () => {
+
+    const formik = useFormik({
+        initialValues: {
+            email: "",
+            password: ""
+        },
+        validationSchema: Yup.object({
+            email: Yup.string()
+                .email('Email is not valid')
+                .required('Email is mandatory'),
+            password: Yup.string()
+                .required('Password is required')
+        })
+    })
 
     return (
         <Layout>
@@ -17,11 +33,21 @@ const Login = () => {
                             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 id="email"
                                 type="email"
-                                placeholder="Email">
+                                placeholder="Email"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.email}
+                            >
 
                             </input>
 
                         </div>
+
+                        {formik.touched.email && formik.errors.email ? (
+                            <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                                <p className="font-bold">{formik.errors.email}</p>
+                            </div>
+                        ) : null}
 
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
@@ -30,11 +56,21 @@ const Login = () => {
                             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 id="password"
                                 type="password"
-                                placeholder="Password">
+                                placeholder="Password"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.password}
+                            >
 
                             </input>
 
                         </div>
+
+                        {formik.touched.password && formik.errors.password ? (
+                            <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                                <p className="font-bold">{formik.errors.password}</p>
+                            </div>
+                        ) : null}
 
                         <input
                             type="submit"
