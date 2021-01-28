@@ -15,10 +15,9 @@ query getClientsBySeller {
 const Index = () => {
 
   const { data, loading, error } = useQuery(GET_CLIENTS)
-
   console.log(data)
-  console.log(loading)
-  console.log(error)
+
+  if (loading) return null;
 
   return (
     <div>
@@ -34,7 +33,7 @@ const Index = () => {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {data.getClientsBySeller.map((client) => (
+            {data.getClientsBySeller && data.getClientsBySeller.map((client) => (
               <tr key={client.id}>
                 <td className="border px-4  py-2 ">{client.name} {client.lastName}</td>
                 <td className="border px-4  py-2 ">{client.company}</td>
