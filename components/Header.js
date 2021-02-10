@@ -2,6 +2,7 @@ import React from 'react';
 import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
+
 const GET_USER = gql`
 query getUser {
     getUser{
@@ -20,8 +21,11 @@ const Header = () => {
     const { data, loading, error } = useQuery(GET_USER)
     const router = useRouter()
 
-    if (loading) return null
-    console.log(data)
+    if (loading) return "cargando..."
+
+    if (!data.getUser || error) {
+        window.location.href = 'login';
+    }
 
     const { name } = data.getUser
 
