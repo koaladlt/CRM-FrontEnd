@@ -5,3 +5,5 @@ const newClient = () => {
         <h1>New Client</h1>
     )
 }
+
+export default newClient;
