@@ -93,6 +93,11 @@ const newClient = () => {
 
             } catch (error) {
                 console.error(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'The client already exists, or there is an error',
+                })
             }
         }
     })
