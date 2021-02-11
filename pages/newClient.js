@@ -2,8 +2,25 @@ import React from 'react';
 import Layout from '../components/Layout'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
+import { gql, useMutation } from '@apollo/client'
+import Swal from 'sweetalert2'
+
+const NEW_CLIENT = gql`
+mutation newClient($input: ClientInput) {
+    newClient(input: $input) {
+      id
+      name
+      lastName
+      company
+      email
+      phone
+    }
+  }
+`
 
 const newClient = () => {
+
+    const [newClient] = useMutation(NEW_CLIENT)
 
     const formik = useFormik({
         initialValues: {
@@ -20,8 +37,31 @@ const newClient = () => {
             company: Yup.string().required("Client's company is mandatory"),
             email: Yup.string().email('Email is not valid').required("Client's email is mandatory")
         }),
-        onSubmit: values => {
-            console.log(values)
+        onSubmit: async values => {
+            const { name, lastName, company, email, phone } = values;
+
+            try {
+                const { data } = await newClient({
+                    variables: {
+                        input: {
+                            name,
+                            lastName,
+                            company,
+                            email,
+                            phone
+                        }
+                    }
+                })
+                Swal.fire({
+                    title: "Success",
+                    text: "New client added",
+                    icon: "success",
+                    confirmButtonText: "Alright!",
+                });
+                console.log(data.newClient)
+            } catch (error) {
+                console.error(error)
+            }
         }
     })
 
