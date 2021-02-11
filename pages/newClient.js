@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../components/Layout'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import { gql, useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
+import { Router, useRouter } from 'next/router'
 
 const NEW_CLIENT = gql`
 mutation newClient($input: ClientInput) {
@@ -19,6 +20,9 @@ mutation newClient($input: ClientInput) {
 `
 
 const newClient = () => {
+    const [modalOpen, setModalOpen] = useState(false)
+    const router = useRouter();
+
 
     const [newClient] = useMutation(NEW_CLIENT)
 
@@ -52,13 +56,18 @@ const newClient = () => {
                         }
                     }
                 })
-                Swal.fire({
+                await Swal.fire({
                     title: "Success",
                     text: "New client added",
                     icon: "success",
                     confirmButtonText: "Alright!",
-                });
-                console.log(data.newClient)
+                },
+                    setModalOpen(true));
+
+                if (!modalOpen) {
+                    router.push('/')
+                }
+
             } catch (error) {
                 console.error(error)
             }
