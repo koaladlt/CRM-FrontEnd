@@ -19,12 +19,35 @@ mutation newClient($input: ClientInput) {
   }
 `
 
+const GET_CLIENTS = gql`
+query getClientsBySeller {
+  getClientsBySeller {
+    name
+    lastName
+    company
+    email
+  }
+}
+`;
+
 const newClient = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const router = useRouter();
 
 
-    const [newClient] = useMutation(NEW_CLIENT)
+    const [newClient] = useMutation(NEW_CLIENT, {
+        update(cache, { data: { newClient } }) {
+            const { getClientsBySeller } = cache.readQuery({ query: GET_CLIENTS })
+            cache.writeQuery({
+                query: GET_CLIENTS,
+                data: {
+                    getClientsBySeller: [...getClientsBySeller, newClient]
+                }
+            })
+        }
+
+
+    })
 
     const formik = useFormik({
         initialValues: {
