@@ -1,9 +1,10 @@
 import React from 'react';
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, useMutation } from '@apollo/client';
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import Swal from 'sweetalert2'
 
 const GET_CLIENT = gql`
 query getClientById($id:ID!) {
@@ -20,6 +21,16 @@ query getClientById($id:ID!) {
 
 `;
 
+const UPDATE_CLIENT = gql`
+mutation updateClient ($id: ID!, $input: ClientInput) {
+    updateClient(id: $id, input: $input) {
+        name   
+        email
+    }
+}
+
+`
+
 
 
 const EditClient = () => {
@@ -33,9 +44,9 @@ const EditClient = () => {
         }
     })
 
-    if (loading) {
-        return "loading..."
-    }
+    const [updateClient] = useMutation(UPDATE_CLIENT)
+
+
 
     const validationSchema = Yup.object({
         name: Yup.string().required("Client's name is mandatory"),
@@ -43,6 +54,41 @@ const EditClient = () => {
         company: Yup.string().required("Client's company is mandatory"),
         email: Yup.string().email('Email is not valid').required("Client's email is mandatory")
     })
+
+    if (loading) {
+        return "loading..."
+    }
+
+    const { getClientById } = data;
+
+    const updateClientInfo = async (values) => {
+
+        const { name, lastName, company, email, phone } = values
+
+        try {
+            const { data } = await updateClient({
+                variables: {
+                    id,
+                    input: {
+                        name,
+                        lastName,
+                        company,
+                        email,
+                        phone
+                    }
+                }
+            })
+            Swal.fire({
+                title: "Success",
+                text: "New client added",
+                icon: "success",
+                confirmButtonText: "Alright!",
+            })
+        } catch (error) {
+            console.error(error)
+        }
+
+    }
 
 
 
@@ -55,6 +101,9 @@ const EditClient = () => {
 
                     <Formik
                         validationSchema={validationSchema}
+                        enableReinitialize
+                        initialValues={getClientById}
+                        onSubmit={(values) => updateClientInfo(values)}
                     >
 
                         {props => {
@@ -76,7 +125,7 @@ const EditClient = () => {
                                             placeholder="Client's name"
                                             onChange={props.handleChange}
                                             onBlur={props.handleBlur}
-                                        // value={formik.values.name}
+                                            value={props.values.name}
                                         >
 
                                         </input>
@@ -99,7 +148,7 @@ const EditClient = () => {
                                             placeholder="Client's Last Name"
                                             onChange={props.handleChange}
                                             onBlur={props.handleBlur}
-                                        // value={formik.values.lastName}
+                                            value={props.values.lastName}
                                         >
 
                                         </input>
@@ -122,7 +171,7 @@ const EditClient = () => {
                                             placeholder="Company's name"
                                             onChange={props.handleChange}
                                             onBlur={props.handleBlur}
-                                        // value={formik.values.company}
+                                            value={props.values.company}
                                         >
 
                                         </input>
@@ -145,7 +194,7 @@ const EditClient = () => {
                                             placeholder="Email address"
                                             onChange={props.handleChange}
                                             onBlur={props.handleBlur}
-                                        // value={formik.values.email}
+                                            value={props.values.email}
                                         >
 
                                         </input>
@@ -168,7 +217,7 @@ const EditClient = () => {
                                             placeholder="Phone number"
                                             onChange={props.handleChange}
                                             onBlur={props.handleBlur}
-                                        // value={formik.values.phone}
+                                            value={props.values.phone}
                                         >
 
                                         </input>
