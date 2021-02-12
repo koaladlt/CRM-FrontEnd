@@ -9,10 +9,33 @@ mutation deleteClient ($id: ID!) {
 
 `
 
+const GET_CLIENTS = gql`
+query getClientsBySeller {
+  getClientsBySeller {
+    id
+    name
+    lastName
+    company
+    email
+  }
+}
+`;
+
 
 const Client = ({ client }) => {
 
-    const [deleteClient] = useMutation(DELETE_CLIENT)
+    const [deleteClient] = useMutation(DELETE_CLIENT, {
+        update(cache) {
+            const { getClientsBySeller } = cache.readQuery({ query: GET_CLIENTS });
+
+            cache.writeQuery({
+                query: GET_CLIENTS,
+                data: {
+                    getClientsBySeller: getClientsBySeller.filter(actualClient => actualClient.id !== id)
+                }
+            })
+        }
+    })
 
     const { name, lastName, company, email, id } = client;
 
