@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import { useQuery, gql, useMutation } from '@apollo/client';
@@ -34,6 +34,7 @@ mutation updateClient ($id: ID!, $input: ClientInput) {
 
 
 const EditClient = () => {
+    const [modalActive, setModalActive] = useState(false)
     const router = useRouter();
     const { query: { id } } = router;
 
@@ -78,12 +79,21 @@ const EditClient = () => {
                     }
                 }
             })
-            Swal.fire({
+            await Swal.fire({
                 title: "Success",
                 text: "New client added",
                 icon: "success",
                 confirmButtonText: "Alright!",
-            })
+            },
+
+                setModalActive(true)
+            )
+
+            if (!modalActive) {
+                router.push('/')
+            }
+
+
         } catch (error) {
             console.error(error)
         }
