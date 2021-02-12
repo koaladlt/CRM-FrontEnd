@@ -1,6 +1,7 @@
 import React from 'react';
 import { gql, useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
+import Router from 'next/router'
 
 const DELETE_CLIENT = gql`
 mutation deleteClient ($id: ID!) {
@@ -39,8 +40,8 @@ const Client = ({ client }) => {
 
     const { name, lastName, company, email, id } = client;
 
-    const confirmDeleteClient = (id) => {
-        console.log(id)
+    const confirmDeleteClient = () => {
+
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -71,6 +72,13 @@ const Client = ({ client }) => {
         })
     }
 
+    const editClient = () => {
+        Router.push({
+            pathname: "/editclient/[id]",
+            query: { id }
+        })
+    }
+
     return (
         <tr key={client.id}>
             <td className="border px-4  py-2 ">{name} {lastName}</td>
@@ -79,9 +87,18 @@ const Client = ({ client }) => {
             <td className="border px-4  py-2 ">
                 <button
                     type="button"
-                    onClick={() => confirmDeleteClient(id)}
+                    onClick={() => confirmDeleteClient()}
                     className="flex justify-center items-center bg-red-800 py-2 px-4 w-full text-white rounded text-xs uppercase font-bold">
                     Delete
+                    <svg className="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </button>
+            </td>
+            <td className="border px-4  py-2 ">
+                <button
+                    type="button"
+                    onClick={() => editClient()}
+                    className="flex justify-center items-center bg-green-600 py-2 px-4 w-full text-white rounded text-xs uppercase font-bold">
+                    Edit
                     <svg className="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </button>
             </td>
