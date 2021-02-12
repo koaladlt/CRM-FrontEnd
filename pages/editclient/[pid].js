@@ -1,11 +1,34 @@
 import React from 'react';
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
+import { useQuery, gql } from '@apollo/client';
+
+const GET_CLIENT = gql`
+query getClientById($id:ID!) {
+    getClientById(id:$id) {
+        id
+        name 
+        email
+    }
+}
+
+
+`;
+
+
 
 const EditClient = () => {
     const router = useRouter();
     const { query: { id } } = router;
-    console.log(id)
+
+
+    const { data, loading, error } = useQuery(GET_CLIENT, {
+        variables: {
+            id
+        }
+    })
+
+    console.log(data)
 
     return (
         <Layout>
