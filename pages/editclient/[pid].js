@@ -81,7 +81,7 @@ const EditClient = () => {
             })
             await Swal.fire({
                 title: "Success",
-                text: "New client added",
+                text: "the client has been modified",
                 icon: "success",
                 confirmButtonText: "Alright!",
             },
@@ -95,7 +95,11 @@ const EditClient = () => {
 
 
         } catch (error) {
-            console.error(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong',
+            })
         }
 
     }
