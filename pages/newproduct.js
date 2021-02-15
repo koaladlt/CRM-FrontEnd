@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../components/Layout'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useMutation, gql } from '@apollo/client';
+import Swal from 'sweetalert2';
+import { useRouter } from 'next/router';
 
+const NEW_PRODUCT = gql`
+mutation newProduct($input: ProductInput) {
+    newProduct(input: $input) {
+        name
+        stock
+        price
+    }
+} 
+
+`
 
 const NewProduct = () => {
+    const [modalOpen, setModalOpen] = useState(false);
+    const router = useRouter();
+
+    const [newProduct] = useMutation(NEW_PRODUCT)
 
     const formik = useFormik({
         initialValues: {
@@ -22,7 +39,36 @@ const NewProduct = () => {
             price: Yup.number()
                 .required("Product's price is mandatory")
                 .positive("You can't add a negative number")
-        })
+        }),
+        onSubmit: async (values) => {
+
+            const { name, stock, price } = values
+
+            try {
+                const { data } = await newProduct({
+                    variables: {
+                        input: {
+                            name,
+                            stock,
+                            price
+                        }
+                    }
+                })
+                await Swal.fire({
+                    title: "Success",
+                    text: "New product added",
+                    icon: "success",
+                    confirmButtonText: "Alright!",
+                },
+                    setModalOpen(true));
+
+                if (!modalOpen) {
+                    router.push('/products')
+                }
+            } catch (error) {
+                console.error(error)
+            }
+        }
     })
 
     return (
