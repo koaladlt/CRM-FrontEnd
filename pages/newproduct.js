@@ -15,13 +15,37 @@ mutation newProduct($input: ProductInput) {
     }
 } 
 
-`
+`;
+
+const GET_PRODUCTS = gql`
+        query getProducts {
+            getProducts {
+                id
+                name
+                price
+                stock
+            }
+        }
+    
+    
+    `;
 
 const NewProduct = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const router = useRouter();
 
-    const [newProduct] = useMutation(NEW_PRODUCT)
+    const [newProduct] = useMutation(NEW_PRODUCT, {
+        update(cache, { data: { newProduct } }) {
+            const { getProducts } = cache.readQuery({ query: GET_PRODUCTS })
+
+            cache.writeQuery({
+                query: GET_PRODUCTS,
+                data: {
+                    getProducts: [...getProducts, newProduct]
+                }
+            })
+        }
+    })
 
     const formik = useFormik({
         initialValues: {
