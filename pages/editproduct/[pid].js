@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery, useMutation } from '@apollo/client'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import Swal from 'sweetalert2'
+
 
 const GET_PRODUCT = gql`
 query getProductById($id: ID!) {
@@ -16,8 +18,20 @@ query getProductById($id: ID!) {
 
 `
 
-const EditProduct = () => {
+const UPDATE_PRODUCT = gql`
+mutation updateProduct($id: ID!, $input: ProductInput) {
+    updateProduct(id: $id, input: $input) {
+        id
+        name
+        stock
+        price
+    }
+}
 
+`
+
+const EditProduct = () => {
+    const [modalOpen, setModalOpen] = useState(false)
     const router = useRouter();
     const { query: { id } } = router;
 
@@ -27,14 +41,53 @@ const EditProduct = () => {
         }
     })
 
-    const updateProductInfo = (values) => {
-        console.log(values)
-    }
-
+    const [updateProduct] = useMutation(UPDATE_PRODUCT)
 
     if (loading) return "loading..."
 
+
+
+
+
+
+    const updateProductInfo = async (values) => {
+
+        const { name, stock, price } = values
+
+        try {
+            const { data } = await updateProduct({
+                variables: {
+                    id,
+                    input: {
+                        name,
+                        stock,
+                        price
+                    }
+                }
+            })
+
+            await Swal.fire({
+                title: "Success",
+                text: "Product has been edit",
+                icon: "success",
+                confirmButtonText: "Alright!",
+            },
+                setModalOpen(true));
+
+            if (!modalOpen) {
+                router.push('/products')
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const { getProductById } = data;
+
+
+
+
+
 
     const validationSchema = Yup.object({
         name: Yup.string().required("Product's name is mandatory"),
