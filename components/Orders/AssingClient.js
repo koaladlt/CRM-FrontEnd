@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Select from 'react-select'
-import Layout from '../Layout';
+import OrderContext from '../../context/OrderContext'
 import { gql, useQuery } from '@apollo/client'
 
 const GET_CLIENTS = gql`
@@ -19,10 +19,11 @@ query getClientsBySeller {
 const AssingClient = () => {
     const { data, loading, error } = useQuery(GET_CLIENTS);
     const [client, setClient] = useState([])
-
+    const orderContext = useContext(OrderContext);
+    const { AddClient } = orderContext
 
     useEffect(() => {
-        console.log(client)
+        AddClient(client)
     }, [client])
 
     const selectClient = (client) => {
