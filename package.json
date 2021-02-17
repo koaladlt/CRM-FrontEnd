@@ -12,10 +12,11 @@
     "apollo-link-context": "^1.0.20",
     "formik": "^2.2.6",
     "graphql": "^15.4.0",
-    "next": "10.0.3",
+    "next": "^10.0.7",
     "node-fetch": "^2.6.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-select": "^4.1.0",
     "sweetalert2": "^10.13.0",
     "yup": "^0.32.8"
   }
