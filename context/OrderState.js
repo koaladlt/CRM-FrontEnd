@@ -8,10 +8,23 @@ import {
     AMOUNT_PRODUCTS
 } from '../types/index';
 
-export default (state, action) => {
-    switch (action.type) {
-
-        default:
-            return state;
+const OrderState = ({ children }) => {
+    const initialState = {
+        client: {},
+        products: [],
+        total: 0
     }
+
+    const [state, dispatch] = useReducer(OrderReducer, initialState)
+    return (
+        <OrderContext.Provider
+            value={{
+
+            }}>
+            {children}
+
+        </OrderContext.Provider>
+    )
 }
+
+export default OrderState;
