@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout'
-import Select from 'react-select'
+import AssingClient from '../components/Orders/AssingClient'
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-]
+
 
 const NewOrder = () => {
     return (
         <Layout>
             <h1 className="text-2xl text-gray-800 font-light">New Order</h1>
+            <AssingClient />
 
-            <Select
-                options={options}
-                isMulti={true}
-            />
         </Layout>
 
 
