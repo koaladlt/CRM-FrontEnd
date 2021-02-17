@@ -1,13 +1,32 @@
 import React from 'react';
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
+import { gql, useQuery } from '@apollo/client'
+
+const GET_PRODUCT = gql`
+query getProductById($id: ID!) {
+    getProductById(id:$id) {
+        name
+        price
+        stock
+    }
+}
+
+`
 
 const EditProduct = () => {
 
     const router = useRouter();
     const { query: { id } } = router;
 
-    console.log(id)
+    const { data, loading, error } = useQuery(GET_PRODUCT, {
+        variables: {
+            id
+        }
+    })
+
+    if (loading) return "loading..."
+
 
     return (
         <Layout>
