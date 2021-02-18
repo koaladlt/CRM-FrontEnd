@@ -4,7 +4,7 @@ import AssingClient from '../components/Orders/AssingClient'
 import OrderContext from '../context/OrderContext'
 import AssignProduct from '../components/Orders/AssignProduct'
 import OrderSummary from '../components/Orders/OrderSummary'
-
+import Total from '../components/Orders/Total'
 
 const NewOrder = () => {
     const orderContext = useContext(OrderContext)
@@ -20,6 +20,13 @@ const NewOrder = () => {
                     <AssingClient />
                     <AssignProduct />
                     <OrderSummary />
+                    <Total />
+
+                    <button
+                        type="button"
+                        className={`bg-gray-800 w-full mt-5 p-2 text-white uppercase font-bold hover:bg-gray-900`}>
+                        Make order
+                    </button>
                 </div>
             </div>
         </Layout>
