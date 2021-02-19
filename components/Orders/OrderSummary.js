@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import OrderContext from '../../context/OrderContext'
+import ProductSummary from './ProductSummary';
+
 
 const OrderSummary = () => {
     const orderContext = useContext(OrderContext)
     const { products } = orderContext;
-
-    console.log(products)
 
 
     return (
@@ -14,7 +14,11 @@ const OrderSummary = () => {
 
             {products.length > 0 ? (
                 <>
-                    {products.length}
+                    {products.map((product) => (
+                        <ProductSummary
+                            key={product.id}
+                            product={product} />
+                    ))}
                 </>
             ) : <>
                     <p>There are no products</p>

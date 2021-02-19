@@ -31,6 +31,11 @@ const OrderState = ({ children }) => {
             payload: products
         })
     }
+
+    const productAmount = () => {
+        console.log("pedido state")
+    }
+
     return (
         <OrderContext.Provider
             value={{
