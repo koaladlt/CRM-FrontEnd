@@ -11,7 +11,7 @@ const NewOrder = () => {
     const { client, products, total } = orderContext;
 
     const validateOrder = () => {
-        return !products.every(product => product.amount > 0) ? "opacity-50 cursor-not-allowed" : ""
+        return !products.every(product => product.amount > 0) || total === 0 || client.length === 0 ? "opacity-50 cursor-not-allowed" : ""
     }
 
     return (
