@@ -25,10 +25,20 @@ const OrderState = ({ children }) => {
 
     }
 
-    const AddProduct = (products) => {
+    const AddProduct = (productsSelected) => {
+        let newState;
+        if (state.products.length > 0) {
+            newState = productsSelected.map(product => {
+                const newObject = state.products.find(productState => productState.id === product.id);
+                return { ...product, ...newObject }
+            })
+        }
+        else {
+            newState = productsSelected
+        }
         dispatch({
             type: SELECT_PRODUCT,
-            payload: products
+            payload: productsSelected
         })
     }
 
