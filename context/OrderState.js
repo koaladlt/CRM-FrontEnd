@@ -59,6 +59,7 @@ const OrderState = ({ children }) => {
     return (
         <OrderContext.Provider
             value={{
+                client: state.client,
                 products: state.products,
                 total: state.total,
                 AddClient,

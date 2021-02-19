@@ -8,7 +8,12 @@ import Total from '../components/Orders/Total'
 
 const NewOrder = () => {
     const orderContext = useContext(OrderContext)
-    console.log(orderContext)
+    const { client, products, total } = orderContext;
+
+    const validateOrder = () => {
+        return !products.every(product => product.amount > 0) ? "opacity-50 cursor-not-allowed" : ""
+    }
+
     return (
         <Layout>
             <h1 className="text-2xl text-gray-800 font-light">New Order</h1>
@@ -24,7 +29,7 @@ const NewOrder = () => {
 
                     <button
                         type="button"
-                        className={`bg-gray-800 w-full mt-5 p-2 text-white uppercase font-bold hover:bg-gray-900`}>
+                        className={`bg-gray-800 w-full mt-5 p-2 text-white uppercase font-bold hover:bg-gray-900 ${validateOrder()}`}>
                         Make order
                     </button>
                 </div>
