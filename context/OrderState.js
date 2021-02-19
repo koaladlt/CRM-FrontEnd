@@ -39,7 +39,7 @@ const OrderState = ({ children }) => {
         }
         dispatch({
             type: SELECT_PRODUCT,
-            payload: productsSelected
+            payload: newState
         })
     }
 
