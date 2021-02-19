@@ -3,11 +3,12 @@ import OrderContext from '../../context/OrderContext'
 
 const ProductSummary = ({ product }) => {
     const orderContext = useContext(OrderContext)
-    const { productsAmount } = orderContext;
+    const { productsAmount, updateTotal } = orderContext;
     const [amount, setAmount] = useState(0)
 
     useEffect(() => {
         updateAmount()
+        updateTotal()
     }, [amount])
 
     const updateAmount = () => {

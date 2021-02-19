@@ -5,7 +5,8 @@ import OrderReducer from './OrderReducer'
 import {
     SELECT_CLIENT,
     SELECT_PRODUCT,
-    AMOUNT_PRODUCTS
+    AMOUNT_PRODUCTS,
+    UPDATE_TOTAL
 } from '../types/index';
 
 export default (state, action) => {
@@ -24,6 +25,11 @@ export default (state, action) => {
             return {
                 ...state,
                 products: state.products.map(product => product.id === action.payload.id ? product = action.payload : product)
+            }
+        case UPDATE_TOTAL:
+            return {
+                ...state,
+                total: state.products.reduce((newTotal, product) => newTotal += product.price * product.amount, 0)
             }
         default:
             return state;
