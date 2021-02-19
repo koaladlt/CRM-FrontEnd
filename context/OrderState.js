@@ -32,8 +32,11 @@ const OrderState = ({ children }) => {
         })
     }
 
-    const productAmount = () => {
-        console.log("pedido state")
+    const productsAmount = (newProduct) => {
+        dispatch({
+            type: AMOUNT_PRODUCTS,
+            payload: newProduct
+        })
     }
 
     return (
@@ -41,7 +44,8 @@ const OrderState = ({ children }) => {
             value={{
                 products: state.products,
                 AddClient,
-                AddProduct
+                AddProduct,
+                productsAmount
             }}>
             {children}
 

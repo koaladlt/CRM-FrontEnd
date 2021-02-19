@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import OrderContext from '../../context/OrderContext'
 import ProductSummary from './ProductSummary';
 
@@ -6,6 +6,8 @@ import ProductSummary from './ProductSummary';
 const OrderSummary = () => {
     const orderContext = useContext(OrderContext)
     const { products } = orderContext;
+
+
 
 
     return (
@@ -17,7 +19,9 @@ const OrderSummary = () => {
                     {products.map((product) => (
                         <ProductSummary
                             key={product.id}
-                            product={product} />
+                            product={product}
+                        />
+
                     ))}
                 </>
             ) : <>

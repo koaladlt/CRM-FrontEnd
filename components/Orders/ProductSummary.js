@@ -1,6 +1,19 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import OrderContext from '../../context/OrderContext'
 
 const ProductSummary = ({ product }) => {
+    const orderContext = useContext(OrderContext)
+    const { productsAmount } = orderContext;
+    const [amount, setAmount] = useState(0)
+
+    useEffect(() => {
+        updateAmount()
+    }, [amount])
+
+    const updateAmount = () => {
+        const newProduct = { ...product, amount: Number(amount) }
+        productsAmount(newProduct)
+    }
 
     const { name, price } = product
 
@@ -16,7 +29,9 @@ const ProductSummary = ({ product }) => {
             <input
                 type="number"
                 placeholder="amount"
-                className="shadow apperance-none border rounded w-full py-2 px-3 text-gray-700 leading tight focus:outline-none focus:shadow-outline md:ml-4">
+                className="shadow apperance-none border rounded w-full py-2 px-3 text-gray-700 leading tight focus:outline-none focus:shadow-outline md:ml-4"
+                onChange={(e) => setAmount(e.target.value)}
+                value={amount}>
             </input>
         </div>
 

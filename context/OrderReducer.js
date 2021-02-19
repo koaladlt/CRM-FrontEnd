@@ -20,6 +20,11 @@ export default (state, action) => {
                 ...state,
                 products: action.payload
             }
+        case AMOUNT_PRODUCTS:
+            return {
+                ...state,
+                products: state.products.map(product => product.id === action.payload.id ? product = action.payload : product)
+            }
         default:
             return state;
     }
