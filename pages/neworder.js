@@ -5,13 +5,47 @@ import OrderContext from '../context/OrderContext'
 import AssignProduct from '../components/Orders/AssignProduct'
 import OrderSummary from '../components/Orders/OrderSummary'
 import Total from '../components/Orders/Total'
+import { gql, useMutation } from '@apollo/client'
+
+const NEW_ORDER = gql`
+mutation newOrder ($input: OrdersInput) {
+    newOrder (input: $input) {
+        id 
+    }
+}
+`;
 
 const NewOrder = () => {
     const orderContext = useContext(OrderContext)
     const { client, products, total } = orderContext;
 
+
+
+
+    const [newOrder] = useMutation(NEW_ORDER)
+
     const validateOrder = () => {
         return !products.every(product => product.amount > 0) || total === 0 || client.length === 0 ? "opacity-50 cursor-not-allowed" : ""
+    }
+
+    const createNewOrder = async () => {
+
+        const { id } = client;
+
+        const order = products.map(({ __typename, stock, ...product }) => product)
+        try {
+            const { data } = await newOrder({
+                variables: {
+                    input: {
+                        client: id,
+                        total,
+                        order
+                    }
+                }
+            })
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (
@@ -29,7 +63,8 @@ const NewOrder = () => {
 
                     <button
                         type="button"
-                        className={`bg-gray-800 w-full mt-5 p-2 text-white uppercase font-bold hover:bg-gray-900 ${validateOrder()}`}>
+                        className={`bg-gray-800 w-full mt-5 p-2 text-white uppercase font-bold hover:bg-gray-900 ${validateOrder()}`}
+                        onClick={() => createNewOrder()}>
                         Make order
                     </button>
                 </div>
