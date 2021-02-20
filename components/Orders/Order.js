@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 const Order = ({ order }) => {
     const { id, total, client, state } = order;
 
+    console.log(order)
+
     const [orderState, setOrderState] = useState(state);
 
     useEffect(() => {
@@ -22,6 +24,7 @@ const Order = ({ order }) => {
 
                 <select className="mt-2 appearance-none bg-blue-600 border border-blue-600 text-white p-2 text-center rounded leading-tight focus:outline-none focus:bg-blue-600 focus:border-blue-500 uppercase text-xs font-bold"
                     value={orderState}
+
                 >
                     <option value="COMPLETE">COMPLETE</option>
                     <option value="PENDING">PENDING</option>
@@ -33,7 +36,13 @@ const Order = ({ order }) => {
             </div>
 
             <div>
-
+                <h2 className="text-gray-800 font-bold mt-2">Order summary</h2>
+                {order.order.map((product) => (
+                    <div key={product.id} className="mt-4">
+                        <p className="text-sm text-gray-600">Product: {product.name}</p>
+                        <p className="text-sm text-gray-600">Amount: {product.amount}</p>
+                    </div>
+                ))}
 
             </div>
         </div>

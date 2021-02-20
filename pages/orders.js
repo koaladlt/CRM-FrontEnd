@@ -10,6 +10,7 @@ query getOrdersBySeller {
         order {
             id
             amount
+            name
         }
         client
         seller
