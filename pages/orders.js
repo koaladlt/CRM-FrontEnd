@@ -46,7 +46,8 @@ const Orders = () => {
                         getOrdersBySeller.map((order) => (
                             <Order
                                 key={order.id}
-                                order={order} />
+                                order={order}
+                            />
                         ))
                     )}
             </Layout>
