@@ -6,6 +6,8 @@ import AssignProduct from '../components/Orders/AssignProduct'
 import OrderSummary from '../components/Orders/OrderSummary'
 import Total from '../components/Orders/Total'
 import { gql, useMutation } from '@apollo/client'
+import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
 
 const NEW_ORDER = gql`
 mutation newOrder ($input: OrdersInput) {
@@ -18,6 +20,8 @@ mutation newOrder ($input: OrdersInput) {
 const NewOrder = () => {
     const orderContext = useContext(OrderContext)
     const { client, products, total } = orderContext;
+    const router = useRouter();
+    const [modalOpen, setModalOpen] = useState(false);
 
 
 
@@ -43,6 +47,17 @@ const NewOrder = () => {
                     }
                 }
             })
+            await Swal.fire({
+                title: "Success",
+                text: "New order added",
+                icon: "success",
+                confirmButtonText: "Alright!",
+            },
+                setModalOpen(true));
+
+            if (!modalOpen) {
+                router.push('/orders')
+            }
         } catch (error) {
             console.error(error)
         }
