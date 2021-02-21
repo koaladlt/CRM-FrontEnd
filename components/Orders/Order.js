@@ -1,9 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import { gql, useMutation } from '@apollo/client';
+
+const UPDATE_ORDER = gql`
+mutation updateOrder ($id: ID!, $input: OrdersInput) {
+    updateOrder(id: $id, input: $input) {
+        state
+    }
+}
+
+`
 
 const Order = ({ order }) => {
     const { id, total, client: { name, lastName, phone, email }, state } = order;
 
-    console.log(order)
+    const [updateOrder] = useMutation(UPDATE_ORDER)
 
     const [orderState, setOrderState] = useState(state);
     const [shape, setShape] = useState('');
@@ -22,10 +32,30 @@ const Order = ({ order }) => {
         if (orderState === "COMPLETE") {
             setShape('border-green-500')
         }
-        if (orderState === "CANCELED") {
+        if (orderState === "CANCELLED") {
             setShape('border-red-800')
         }
     }
+
+    const changeState = async (state) => {
+        try {
+            const { data } = await updateOrder({
+                variables: {
+                    id,
+                    input: {
+                        state,
+                        client: order.client.id
+                    }
+
+                }
+            })
+            setOrderState(data.updateOrder.state)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
 
     return (
         <div className={`${shape} border-t-4 mt-4 bg-white rounded p-6 md:grid md:grid-cols-2 md:grap-4 shadow-lg`}>
@@ -52,11 +82,12 @@ const Order = ({ order }) => {
 
                 <select className="mt-2 appearance-none bg-blue-600 border border-blue-600 text-white p-2 text-center rounded leading-tight focus:outline-none focus:bg-blue-600 focus:border-blue-500 uppercase text-xs font-bold"
                     value={orderState}
+                    onChange={e => changeState(e.target.value)}
 
                 >
                     <option value="COMPLETE">COMPLETE</option>
                     <option value="PENDING">PENDING</option>
-                    <option value="CANCELED">CANCELED</option>
+                    <option value="CANCELLED">CANCELLED</option>
 
                 </select>
 
