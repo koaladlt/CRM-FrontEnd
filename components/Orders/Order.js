@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 const Order = ({ order }) => {
-    const { id, total, client, state } = order;
+    const { id, total, client: { name, lastName, phone, email }, state } = order;
 
     console.log(order)
 
@@ -17,7 +17,7 @@ const Order = ({ order }) => {
         <div className="mt-4 bg-white rounded p-6 md:grid md:grid-cols-2 md:grap-4 shadow-lg">
             <div>
                 <p className="font-bold text-gray-800">
-                    Client: {client}
+                    Client: {name} {lastName}
                 </p>
 
                 <h2 className="text-gray-800 font-bold mt-10"> Order State: </h2>

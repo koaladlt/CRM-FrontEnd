@@ -12,7 +12,13 @@ query getOrdersBySeller {
             amount
             name
         }
-        client
+        client {
+            id
+            name
+            lastName
+            email
+            phone
+        }
         seller
         total
         state
