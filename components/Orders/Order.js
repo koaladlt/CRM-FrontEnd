@@ -6,15 +6,29 @@ const Order = ({ order }) => {
     console.log(order)
 
     const [orderState, setOrderState] = useState(state);
+    const [shape, setShape] = useState('');
 
     useEffect(() => {
         if (orderState) {
             setOrderState(orderState)
         }
+        shapeColor()
     }, [orderState])
 
+    const shapeColor = () => {
+        if (orderState === "PENDING") {
+            setShape('border-yellow-500')
+        }
+        if (orderState === "COMPLETE") {
+            setShape('border-green-500')
+        }
+        if (orderState === "CANCELED") {
+            setShape('border-red-800')
+        }
+    }
+
     return (
-        <div className="mt-4 bg-white rounded p-6 md:grid md:grid-cols-2 md:grap-4 shadow-lg">
+        <div className={`${shape} border-t-4 mt-4 bg-white rounded p-6 md:grid md:grid-cols-2 md:grap-4 shadow-lg`}>
             <div>
                 <p className="font-bold text-gray-800">
                     Client: {name} {lastName}
