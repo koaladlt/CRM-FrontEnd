@@ -17,6 +17,30 @@ mutation newOrder ($input: OrdersInput) {
 }
 `;
 
+const GET_ORDERS_BY_SELLER = gql`
+query getOrdersBySeller {
+    getOrdersBySeller {
+        id
+        order {
+            id
+            amount
+            name
+        }
+        client {
+            id
+            name
+            lastName
+            email
+            phone
+        }
+        seller
+        total
+        state
+    }
+}
+
+`;
+
 const NewOrder = () => {
     const orderContext = useContext(OrderContext)
     const { client, products, total } = orderContext;
@@ -26,7 +50,21 @@ const NewOrder = () => {
 
 
 
-    const [newOrder] = useMutation(NEW_ORDER)
+    const [newOrder] = useMutation(NEW_ORDER, {
+        update(cache, {
+            data: { newOrder } }) {
+            const { getOrdersBySeller } = cache.readQuery({
+                query: GET_ORDERS_BY_SELLER
+            });
+
+            cache.writeQuery({
+                query: GET_ORDERS_BY_SELLER,
+                data: {
+                    getOrdersBySeller: [...getOrdersBySeller, newOrder]
+                }
+            })
+        }
+    })
 
     const validateOrder = () => {
         return !products.every(product => product.amount > 0) || total === 0 || client.length === 0 ? "opacity-50 cursor-not-allowed" : ""
