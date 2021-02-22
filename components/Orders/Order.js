@@ -18,11 +18,30 @@ mutation deleteOrder($id: ID!) {
 
 `
 
+const GET_ORDERS_BY_SELLER = gql`
+query getOrdersBySeller {
+    getOrdersBySeller {
+        id
+}
+}
+`;
+
 const Order = ({ order }) => {
     const { id, total, client: { name, lastName, phone, email }, state } = order;
 
     const [updateOrder] = useMutation(UPDATE_ORDER);
-    const [deleteOrder] = useMutation(DELETE_ORDER);
+    const [deleteOrder] = useMutation(DELETE_ORDER, {
+        update(cache) {
+            const { getOrdersBySeller } = cache.readQuery({
+                query: GET_ORDERS_BY_SELLER
+            })
+
+            cache.writeQuery({
+                query: GET_ORDERS_BY_SELLER,
+                data: { getOrdersBySeller: getOrdersBySeller.filter(order => order.id !== id) }
+            })
+        }
+    });
 
 
     const [orderState, setOrderState] = useState(state);
