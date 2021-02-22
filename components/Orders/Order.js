@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
+import Swal from 'sweetalert2';
 
 const UPDATE_ORDER = gql`
 mutation updateOrder ($id: ID!, $input: OrdersInput) {
@@ -10,10 +11,19 @@ mutation updateOrder ($id: ID!, $input: OrdersInput) {
 
 `
 
+const DELETE_ORDER = gql`
+mutation deleteOrder ($id: ID!) {
+    deleteOrder (id: $id) 
+}
+
+
+`
+
 const Order = ({ order }) => {
     const { id, total, client: { name, lastName, phone, email }, state } = order;
 
     const [updateOrder] = useMutation(UPDATE_ORDER)
+    const [deleteOrder] = useMutation(DELETE_ORDER)
 
     const [orderState, setOrderState] = useState(state);
     const [shape, setShape] = useState('');
@@ -53,6 +63,36 @@ const Order = ({ order }) => {
         } catch (error) {
             console.error(error)
         }
+    }
+
+    const confirmDeleteOrder = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete order!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await deleteOrder({
+                        variables: {
+                            id
+                        }
+                    })
+
+                    Swal.fire(
+                        'Deleted!',
+                        'Client has been deleted.',
+                        'success'
+                    )
+                } catch (error) {
+                    console.error(error)
+                }
+            }
+        })
     }
 
 
@@ -107,7 +147,8 @@ const Order = ({ order }) => {
                 <span className="font-light"> $ {total} </span>
                 </p>
 
-                <button className="flex items-center mt-4 bg-red-800 px-5 py-2 inline-block text-white rounded leading-tight uppercase text-xs font-bold">
+                <button className="flex items-center mt-4 bg-red-800 px-5 py-2 inline-block text-white rounded leading-tight uppercase text-xs font-bold"
+                    onClick={() => confirmDeleteOrder()}>
                     Delete order
                     <svg className="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </button>
