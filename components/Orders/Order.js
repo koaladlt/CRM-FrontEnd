@@ -12,18 +12,18 @@ mutation updateOrder ($id: ID!, $input: OrdersInput) {
 `
 
 const DELETE_ORDER = gql`
-mutation deleteOrder ($id: ID!) {
-    deleteOrder (id: $id) 
+mutation deleteOrder($id: ID!) {
+    deleteOrder(id: $id)
 }
-
 
 `
 
 const Order = ({ order }) => {
     const { id, total, client: { name, lastName, phone, email }, state } = order;
 
-    const [updateOrder] = useMutation(UPDATE_ORDER)
-    const [deleteOrder] = useMutation(DELETE_ORDER)
+    const [updateOrder] = useMutation(UPDATE_ORDER);
+    const [deleteOrder] = useMutation(DELETE_ORDER);
+
 
     const [orderState, setOrderState] = useState(state);
     const [shape, setShape] = useState('');
@@ -66,6 +66,7 @@ const Order = ({ order }) => {
     }
 
     const confirmDeleteOrder = () => {
+
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -85,14 +86,16 @@ const Order = ({ order }) => {
 
                     Swal.fire(
                         'Deleted!',
-                        'Client has been deleted.',
+                        'Order has been deleted.',
                         'success'
                     )
+
                 } catch (error) {
                     console.error(error)
                 }
             }
         })
+
     }
 
 
