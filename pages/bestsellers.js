@@ -1,54 +1,41 @@
 import React from 'react';
 import Layout from '../components/Layout'
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { gql, selectURI, useQuery } from '@apollo/client'
 
-const data = [
-    {
-        name: 'Page A',
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: 'Page B',
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
-    },
-    {
-        name: 'Page C',
-        uv: 2000,
-        pv: 9800,
-        amt: 2290,
-    },
-    {
-        name: 'Page D',
-        uv: 2780,
-        pv: 3908,
-        amt: 2000,
-    },
-    {
-        name: 'Page E',
-        uv: 1890,
-        pv: 4800,
-        amt: 2181,
-    },
-    {
-        name: 'Page F',
-        uv: 2390,
-        pv: 3800,
-        amt: 2500,
-    },
-    {
-        name: 'Page G',
-        uv: 3490,
-        pv: 4300,
-        amt: 2100,
-    },
-];
+const BEST_SELLERS = gql`
+query getBestSellers {
+    getBestSellers {
+        seller {
+            name
+            email
+        }
+        total
+    }
+}
+
+
+`;
+
 
 const BestSellers = () => {
 
+    const { data, loading, error } = useQuery(BEST_SELLERS);
+
+    if (loading) return null;
+
+    const { getBestSellers } = data;
+
+    const dataGraphic = [];
+
+    getBestSellers.map((seller, i) => {
+        dataGraphic[i] = {
+            ...seller.seller[0],
+            total: seller.total
+        }
+    })
+
+    console.log(dataGraphic)
 
     return (
         <Layout>
@@ -59,7 +46,7 @@ const BestSellers = () => {
                 className="mt-10"
                 width={600}
                 height={500}
-                data={data}
+                data={dataGraphic}
                 margin={{
                     top: 5,
                     right: 30,
@@ -72,7 +59,7 @@ const BestSellers = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="pv" fill="#3182CE" />
+                <Bar dataKey="total" fill="#3182CE" />
 
             </BarChart>
 
