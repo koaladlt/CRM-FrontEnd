@@ -20,11 +20,14 @@ const Layout = ({ children }) => {
 
             {router.pathname === '/login' || router.pathname === '/newaccount' ?
                 (
-                    <div className='bg-gray-800 min-h-screen flex items-center justify-around '>
-                        <div>
+                    <div className=" bg-gray-800 flex min-h-screen flex items-center justify-evenly ">
+                        <div className>
                             {children}
                         </div>
-                        <DataSvg />
+                        <div>
+                            <DataSvg />
+
+                        </div>
                     </div>
                 ) : (<div className="bg-gray-200 min-h-screen">
                     <div className="sm:flex min-h-screen">

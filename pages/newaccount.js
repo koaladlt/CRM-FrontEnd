@@ -2,9 +2,10 @@ import React from 'react';
 import Layout from '../components/Layout'
 import { useFormik } from 'formik'
 import * as Yup from "Yup";
-import { useQuery, useMutation, gql, NetworkStatus } from '@apollo/client'
+import { useMutation, gql, NetworkStatus } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
+import Link from 'next/link';
 
 const NEW_ACCOUNT = gql`
 mutation newUser($input: UserInput) {
@@ -78,7 +79,7 @@ const NewAccount = () => {
 
     return (
         <Layout>
-            <h1 className='text-center text-2xl text-white font-light'>Sign Up</h1>
+            <h1 className='text-center text-2xl text-white font-bold'>Sign Up</h1>
 
             <div className="flex justify-center mt-5">
                 <div className="w-full max-w-sm">
@@ -181,6 +182,13 @@ const NewAccount = () => {
 
                         />
                     </form>
+                    <Link href="/login">
+                        <a>
+                            <h4 className="text-center text-white font-light">
+                                Already have an account?
+                        </h4>
+                        </a>
+                    </Link>
                 </div>
 
             </div>

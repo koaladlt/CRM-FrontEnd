@@ -5,6 +5,7 @@ import * as Yup from 'yup'
 import { gql, useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 
 const AUTHENTICATE_USER = gql`
@@ -74,7 +75,7 @@ const Login = () => {
             {loading ? (<div className="loader">
             </div>) : (
                     <>
-                        <h1 className=' text-center text-2xl text-white font-light'>Login</h1>
+                        <h1 className=' text-center text-2xl text-white font-bold'>Login</h1>
 
                         <div className=" flex justify-center mt-5">
                             <div className="w-full max-w-sm">
@@ -132,6 +133,11 @@ const Login = () => {
 
                                     />
                                 </form>
+                                <Link href="/newaccount">
+                                    <a>
+                                        <h4 className=' text-center text-white font-light'>Don't have an account?</h4>
+                                    </a>
+                                </Link>
                             </div>
 
                         </div>
