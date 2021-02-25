@@ -29,7 +29,14 @@ const BestSellers = () => {
         }
     }, [startPolling, stopPolling])
 
-    if (loading) return null;
+    if (loading) {
+        return (
+            <Layout>
+                <div className="loader">
+                </div>
+            </Layout>
+        )
+    }
 
     console.log(data)
 

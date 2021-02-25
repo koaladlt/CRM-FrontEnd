@@ -26,7 +26,6 @@ const Layout = ({ children }) => {
                         </div>
                         <div>
                             <DataSvg />
-
                         </div>
                     </div>
                 ) : (<div className="bg-gray-200 min-h-screen">

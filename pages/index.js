@@ -21,8 +21,15 @@ const Index = () => {
   const { data, loading, error } = useQuery(GET_CLIENTS)
 
 
+  if (loading) {
+    return (
+      <Layout>
+        <div className="loader">
+        </div>
+      </Layout>
+    )
 
-  if (loading) return "cargando...";
+  }
 
   if (!data.getClientsBySeller || error) {
     window.location.href = 'login';
@@ -42,7 +49,7 @@ const Index = () => {
                 <th className="w-1/5 py-2 ">Name</th>
                 <th className="w-1/5 py-2 ">Company</th>
                 <th className="w-1/5 py-2 ">Email</th>
-                <th className="w-1/5 py-2 ">Delete</th>
+                {/* <th className="w-1/5 py-2 ">Delete</th> */}
                 <th className="w-1/5 py-2 ">Edit</th>
               </tr>
             </thead>

@@ -21,7 +21,10 @@ const Header = () => {
     const { data, loading, error } = useQuery(GET_USER)
     const router = useRouter()
 
-    if (loading) return "cargando..."
+    const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
+
+
+    if (loading) return null;
 
     if (!data.getUser || error) {
         window.location.href = 'login';
@@ -35,13 +38,12 @@ const Header = () => {
 
     }
     return (
-        <div className="sm:flex justify-between mb-6">
-            <p className="mr-2 mb-5 lg:mb-0">Hola: {name}</p>
-
+        <div className="sm:flex mb-6 justify-between">
+            <h1 className="text-center text-2xl font-light"> {name}, have a great {days[new Date().getDay()]}!</h1>
             <button
                 onClick={() => logOut()}
                 type="button"
-                className="bg-blue-800 w-full sm:w-auto font bold uppercase text-xs rounded py-1 px-2 text-white shadow-md">
+                className="bg-blue-800 w-full sm:w-auto font bold uppercase text-sm py-1 px-2 text-white shadow-md rounded-full">
                 Log Out
             </button>
         </div>

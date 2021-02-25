@@ -21,7 +21,12 @@ export default function Products() {
     const { data, loading, error } = useQuery(GET_PRODUCTS)
 
     if (loading) {
-        return 'loading...'
+        return (
+            <Layout>
+                <div className="loader">
+                </div>
+            </Layout>
+        )
     }
 
 

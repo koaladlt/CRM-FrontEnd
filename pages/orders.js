@@ -33,7 +33,14 @@ const Orders = () => {
 
     const { data, loading, error } = useQuery(GET_ORDERS_BY_SELLER);
 
-    if (loading) return null;
+    if (loading) {
+        return (
+            <Layout>
+                <div className="loader">
+                </div>
+            </Layout>
+        )
+    }
     console.log(data);
 
     const { getOrdersBySeller } = data;

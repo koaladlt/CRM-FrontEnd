@@ -1,5 +1,5 @@
 import React from 'react';
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import Swal from 'sweetalert2'
 import Router from 'next/router'
 
@@ -22,9 +22,25 @@ query getClientsBySeller {
 }
 `;
 
+// const GET_ORDERS_BY_SELLER = gql`
+// query getOrdersBySeller {
+//     getOrdersBySeller {
+//         id
+//         order {
+//             id
+//             amount
+//             name
+//         }
+//         client {
+//             id
+//         }
+//     }
+// } `;
+
 
 const Client = ({ client }) => {
-
+    // const { data, loading, error } = useQuery(GET_ORDERS_BY_SELLER);
+    // if (loading) return null;
     const [deleteClient] = useMutation(DELETE_CLIENT, {
         update(cache) {
             const { getClientsBySeller } = cache.readQuery({ query: GET_CLIENTS });
@@ -40,37 +56,37 @@ const Client = ({ client }) => {
 
     const { name, lastName, company, email, id } = client;
 
-    const confirmDeleteClient = () => {
+    // const confirmDeleteClient = () => {
 
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete client!'
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const { data } = await deleteClient({
-                        variables: {
-                            id
-                        }
-                    });
+    //     Swal.fire({
+    //         title: 'Are you sure?',
+    //         text: "You won't be able to revert this!",
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes, delete client!'
+    //     }).then(async (result) => {
+    //         if (result.isConfirmed) {
+    //             try {
+    //                 const { data } = await deleteClient({
+    //                     variables: {
+    //                         id
+    //                     }
+    //                 });
 
-                    Swal.fire(
-                        'Deleted!',
-                        'Client has been deleted.',
-                        'success'
-                    )
+    //                 Swal.fire(
+    //                     'Deleted!',
+    //                     'Client has been deleted.',
+    //                     'success'
+    //                 )
 
-                } catch (error) {
-                    console.error(error)
-                }
-            }
-        })
-    }
+    //             } catch (error) {
+    //                 console.error(error)
+    //             }
+    //         }
+    //     })
+    // }
 
     const editClient = () => {
         Router.push({
@@ -84,7 +100,7 @@ const Client = ({ client }) => {
             <td className="border px-4  py-2 ">{name} {lastName}</td>
             <td className="border px-4  py-2 ">{company}</td>
             <td className="border px-4  py-2 ">{email}</td>
-            <td className="border px-4  py-2 ">
+            {/* <td className="border px-4  py-2 ">
                 <button
                     type="button"
                     onClick={() => confirmDeleteClient()}
@@ -92,7 +108,7 @@ const Client = ({ client }) => {
                     Delete
                     <svg className="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </button>
-            </td>
+            </td> */}
             <td className="border px-4  py-2 ">
                 <button
                     type="button"
