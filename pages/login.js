@@ -74,9 +74,9 @@ const Login = () => {
             {loading ? (<div className="loader">
             </div>) : (
                     <>
-                        <h1 className='text-center text-2xl text-white font-light'>Login</h1>
+                        <h1 className=' text-center text-2xl text-white font-light'>Login</h1>
 
-                        <div className="flex justify-center mt-5">
+                        <div className=" flex justify-center mt-5">
                             <div className="w-full max-w-sm">
                                 <form className="bg-white rounded shadow-md px-8 pt-6 pb-8 mb-4" onSubmit={formik.handleSubmit}>
                                     <div className="mb-4">
@@ -135,6 +135,7 @@ const Login = () => {
                             </div>
 
                         </div>
+
                     </>
                 )
             }

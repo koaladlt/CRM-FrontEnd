@@ -3,6 +3,8 @@ import Head from 'next/head';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useRouter } from 'next/router';
+import DataSvg from './DataSvg'
+
 
 const Layout = ({ children }) => {
 
@@ -18,11 +20,11 @@ const Layout = ({ children }) => {
 
             {router.pathname === '/login' || router.pathname === '/newaccount' ?
                 (
-                    <div className='bg-gray-800 min-h-screen flex flex-col justify-center '>
+                    <div className='bg-gray-800 min-h-screen flex items-center justify-around '>
                         <div>
                             {children}
                         </div>
-
+                        <DataSvg />
                     </div>
                 ) : (<div className="bg-gray-200 min-h-screen">
                     <div className="sm:flex min-h-screen">
