@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import DataSvg from './DataSvg'
 
 
+
 const Layout = ({ children }) => {
 
     const router = useRouter()
