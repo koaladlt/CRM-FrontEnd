@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
                         <div className>
                             {children}
                         </div>
-                        <div>
+                        <div className="hidden lg:block">
                             <DataSvg />
                         </div>
                     </div>
