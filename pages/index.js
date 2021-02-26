@@ -26,6 +26,8 @@ const Index = () => {
       </div>
     )
   }
+
+
   if (!data.getClientsBySeller || error) {
     return window.location.href = 'login';
   }

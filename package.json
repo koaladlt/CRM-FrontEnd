@@ -20,5 +20,10 @@
     "recharts": "^2.0.7",
     "sweetalert2": "^10.13.0",
     "yup": "^0.32.8"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.2.4",
+    "postcss": "^8.2.6",
+    "tailwindcss": "^2.0.3"
   }
 }
