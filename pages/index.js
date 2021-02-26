@@ -20,20 +20,21 @@ const Index = () => {
   const router = useRouter()
   const { data, loading, error } = useQuery(GET_CLIENTS)
 
-
   if (loading) {
     return (
-      <Layout>
-        <div className="loader">
-        </div>
-      </Layout>
+      <div className="loader">
+      </div>
     )
-
   }
-
   if (!data.getClientsBySeller || error) {
-    window.location.href = 'login';
+    return window.location.href = 'login';
   }
+
+
+
+
+
+
 
   return (
     <div>
